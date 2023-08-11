@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Blog, User} = require('../models');
+const { Blog, User, Comment} = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
@@ -35,6 +35,10 @@ router.get('/blog/:id', async (req, res) => {
           model: User,
           attributes: ['name'],
         },
+        {
+          model: Comment, 
+          include: [User],
+        },
       ],
     });
 
@@ -48,6 +52,49 @@ router.get('/blog/:id', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const blogData = await Blog.findByPk(req.params.id, {});
+
+    const blog = blogData.get({ plain: true });
+
+    res.render('editblog', {
+      ...blog,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+
+// router.put('/edit/:id', (req, res) => {
+//   // Calls the update method on the Book model
+//   Blog.update(
+//     {
+//       // All the fields you can update and the data attached to the request body.
+//       name: req.body.name,
+//       description: req.body.description
+//     },
+//     {
+//       where: {
+//         id: req.params.id 
+//       }
+//     }
+//   )
+//     .then((updatedPost) => {
+//       // Sends the updated book as a json response
+//       res.json(updatedPost);
+//     })
+//     .catch((err) => res.json(err));
+// });
+
+
+
+
 
 // Use withAuth middleware to prevent access to route
 router.get('/dashboard', withAuth, async (req, res) => {
