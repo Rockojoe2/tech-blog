@@ -71,28 +71,6 @@ router.get('/edit/:id', async (req, res) => {
 
 
 
-// router.put('/edit/:id', (req, res) => {
-//   // Calls the update method on the Book model
-//   Blog.update(
-//     {
-//       // All the fields you can update and the data attached to the request body.
-//       name: req.body.name,
-//       description: req.body.description
-//     },
-//     {
-//       where: {
-//         id: req.params.id 
-//       }
-//     }
-//   )
-//     .then((updatedPost) => {
-//       // Sends the updated book as a json response
-//       res.json(updatedPost);
-//     })
-//     .catch((err) => res.json(err));
-// });
-
-
 
 
 
